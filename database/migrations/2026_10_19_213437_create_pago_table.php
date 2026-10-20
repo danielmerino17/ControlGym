@@ -13,15 +13,14 @@ return new class extends Migration
     {
         Schema::create('pago', function (Blueprint $table) {
             $table->id('id_pago');
-            
-            // Relaciones
             $table->foreignId('id_membresia')->constrained('membresia', 'id_membresia')->unique();
             $table->foreignId('id_metodo_pago')->constrained('metodo_pago', 'id_metodo_pago');
             
-            // Suponiendo que la tabla de usuarios del sistema se llama 'usuario' o 'users' (ajusta según corresponda)
+            // Solo una declaración para el usuario que registra
             $table->unsignedBigInteger('id_usuario_registra');
             $table->foreign('id_usuario_registra')->references('id_usuario')->on('usuario');
 
+            // Solo una declaración para el usuario que autoriza
             $table->unsignedBigInteger('id_usuario_autoriza')->nullable();
             $table->foreign('id_usuario_autoriza')->references('id_usuario')->on('usuario');
 

@@ -7,14 +7,15 @@ use Illuminate\Database\Seeder;
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
-    {
-        $this->call([
-            UsuarioSeeder::class,
-            TipoMembresiaSeeder::class,
-            ClienteSeeder::class,
-            MetodoPagoSeeder::class,
-            MembresiaSeeder::class,
-            PagoSeeder::class,
-        ]);
-    }
+{
+    $this->call([
+        UsuarioSeeder::class,
+        TipoMembresiaSeeder::class,
+        ClienteSeeder::class,
+        MetodoPagoSeeder::class,
+        MembresiaSeeder::class,
+        PagoSeeder::class,
+        SeguridadSeeder::class, // <-- Ponlo al final
+    ]);
+}
 }

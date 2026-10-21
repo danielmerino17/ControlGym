@@ -11,15 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('bitacoras', function (Blueprint $table) {
-    $table->id();
-    $table->foreignId('user_id')->nullable()->constrained('usuarios')->onDelete('set null');
-    $table->string('accion'); // Ej: INSERT, UPDATE, DELETE
-    $table->string('modulo'); // Ej: Clientes, Membresías
-    $table->text('detalles')->nullable();
-    $table->string('ip_address')->nullable();
-    $table->timestamps();
-});
+        Schema::create('bitacora', function (Blueprint $table) {
+            $table->id('id_bitacora');
+            $table->unsignedBigInteger('id_usuario');
+            $table->foreign('id_usuario')->references('id_usuario')->on('usuario');
+            $table->dateTime('fecha_hora');
+            $table->string('accion', 50);
+            $table->string('modulo', 50);
+            $table->unsignedBigInteger('id_registro')->nullable();
+            $table->text('detalle')->nullable();
+            $table->timestamps();
+        });
     }
 
     /**

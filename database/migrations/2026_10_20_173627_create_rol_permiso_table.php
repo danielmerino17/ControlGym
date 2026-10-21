@@ -12,11 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('rol_permiso', function (Blueprint $table) {
-    $table->id();
-    $table->foreignId('rol_id')->constrained('roles')->onDelete('cascade');
-    $table->foreignId('permiso_id')->constrained('permisos')->onDelete('cascade');
-    $table->timestamps();
-});
+            $table->foreignId('id_rol')->constrained('rol', 'id_rol')->onDelete('cascade');
+            $table->foreignId('id_permiso')->constrained('permiso', 'id_permiso')->onDelete('cascade');
+            
+            // Llave primaria compuesta
+            $table->primary(['id_rol', 'id_permiso']);
+            $table->timestamps();
+        });
     }
 
     /**

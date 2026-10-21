@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('permisos', function (Blueprint $table) {
-    $table->id();
-    $table->string('nombre'); // Ej: Crear Clientes
-    $table->string('slug')->unique(); // Ej: clientes.crear
-    $table->timestamps();
-});
+        Schema::create('categoria_material', function (Blueprint $table) {
+            $table->id('id_categoria');
+            $table->string('nombre', 50)->unique();
+            $table->string('descripcion', 255)->nullable();
+            $table->timestamps();
+        });
     }
 
     /**
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('permisos');
+        Schema::dropIfExists('categoria_material');
     }
 };

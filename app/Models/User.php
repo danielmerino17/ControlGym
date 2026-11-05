@@ -10,7 +10,8 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    protected $table = 'usuarios'; // Especificamos que usamos la tabla en español
+    protected $table = 'usuarios';
+    protected $primaryKey = 'id_usuario';
 
     protected $fillable = [
         'name',

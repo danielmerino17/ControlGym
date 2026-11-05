@@ -17,12 +17,10 @@ return new class extends Migration
             $table->foreignId('id_metodo_pago')->constrained('metodo_pago', 'id_metodo_pago');
             
             // Solo una declaración para el usuario que registra
-            $table->unsignedBigInteger('id_usuario_registra');
-            $table->foreign('id_usuario_registra')->references('id_usuario')->on('usuario');
+            $table->unsignedBigInteger('id_usuario_registra')->nullable();
 
             // Solo una declaración para el usuario que autoriza
             $table->unsignedBigInteger('id_usuario_autoriza')->nullable();
-            $table->foreign('id_usuario_autoriza')->references('id_usuario')->on('usuario');
 
             $table->decimal('monto', 10, 2);
             $table->decimal('descuento', 10, 2)->default(0.00);

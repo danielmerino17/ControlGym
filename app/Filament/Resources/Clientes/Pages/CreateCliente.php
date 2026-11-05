@@ -9,7 +9,7 @@ class CreateCliente extends CreateRecord
 {
     protected static string $resource = ClienteResource::class;
 
-    // Agrega este método para redirigir a la tabla principal
+    // Método para redirigir a la tabla principal
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');
@@ -19,5 +19,11 @@ class CreateCliente extends CreateRecord
     protected function getCreatedNotificationMessage(): ?string
     {
         return '¡Cliente registrado correctamente!';
+    }
+
+    // Quitar el "crear y crear otro".
+    public function canCreateAnother(): bool
+    {
+        return false;
     }
 }

@@ -36,7 +36,7 @@ class Cliente extends Model
     // Relación: un cliente tiene muchas membresías.
     public function membresias()
     {
-        return $this->hasMany(Membresia::class);
+        return $this->hasMany(Membresia::class, 'id_cliente');
     }
 
     // Relación: Un cliente tiene muchos pagos.

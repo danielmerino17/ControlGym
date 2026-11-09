@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Prestamos\Tables;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\DeleteAction;
 use Filament\Tables\Table;
 
 class PrestamosTable
@@ -19,7 +20,7 @@ class PrestamosTable
                 //
             ])
             ->recordActions([
-                EditAction::make(),
+                //
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

@@ -17,6 +17,7 @@ use Filament\Tables;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\ViewAction;
+use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TernaryFilter;
@@ -61,11 +62,17 @@ class ClienteResource extends Resource
                     ->email()
                     ->unique(ignoreRecord: true)
                     ->maxLength(255)
+                    ->validationMessages([
+                        'unique' => 'El correo electrónico ya está en uso. Por favor, ingrese un correo electrónico diferente.',
+                    ])  
                     ->label('Correo Electrónico'),
                 
                 TextInput::make('documento_identidad')
                     ->unique(ignoreRecord: true)
                     ->maxLength(50)
+                    ->validationMessages([
+                        'unique' => 'CURP ya registrado, por favor ingrese un CURP diferente.',
+                    ])  
                     ->label('Documento de Identidad'),
                 
                 DatePicker::make('fecha_registro')
@@ -111,8 +118,10 @@ class ClienteResource extends Resource
                 TextColumn::make('telefono')
                     ->searchable()
                     ->label('Teléfono'),
+
                 TextColumn::make('correo')
                     ->searchable(),
+
                 IconColumn::make('activo')
                     ->boolean()
                     ->label('Activo'),
@@ -129,7 +138,8 @@ class ClienteResource extends Resource
                     ->default(true), 
             ])
             ->actions([
-                //
+                \Filament\Actions\EditAction::make(),
+                \Filament\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 //

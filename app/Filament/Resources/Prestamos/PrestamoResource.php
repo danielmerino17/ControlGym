@@ -10,6 +10,8 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\EditAction;
 
 class PrestamoResource extends Resource
 {
@@ -121,6 +123,7 @@ class PrestamoResource extends Resource
             ])
             ->actions([
                 Actions\EditAction::make(),
+                Actions\DeleteAction::make(),
             ]);
     }
 

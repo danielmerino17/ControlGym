@@ -33,7 +33,7 @@ class ClienteSeeder extends Seeder
         Cliente::firstOrCreate([
             'correo' => 'daniel@gym.com'
         ], [
-            'nombre' => 'Daniel',
+            'nombre' => 'Eduardo Daniel',
             'apellido_paterno' => 'Merino',
             'apellido_materno' => 'Mena',
             'telefono' => '5511223344',

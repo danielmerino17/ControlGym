@@ -17,6 +17,7 @@ class MembresiaResource extends Resource
 {
     protected static ?string $model = Membresia::class;
 
+    // Configuración de la ruta base para acceder a este recurso en el panel de administración (4).
     public static function getNavigationIcon(): ?string
     {
         return 'heroicon-o-identification';
@@ -37,17 +38,20 @@ class MembresiaResource extends Resource
         return 2;
     }
 
+    // Construcción del formulario. 
     public static function form(Schema $schema): Schema
     {
         return $schema
             ->components([
                 Forms\Components\Select::make('id_cliente')
                     ->relationship('cliente', 'nombre')
-                    ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->nombre} {$record->primer_apellido}")
+                    ->getOptionLabelFromRecordUsing(fn ($record) => $record->nombre . ' ' . $record->primer_apellido)
                     ->searchable()
                     ->preload()
                     ->required()
                     ->label('Cliente')
+
+                    // Evitamos que se empalmen membresías. Buscamos si el cliente ya tiene una activa cuya fecha de fin cubra la nueva fecha de inicio
                     ->rules([
                         fn ($get, ?Membresia $record) => function (string $attribute, $value, $fail) use ($get, $record) {
                             $fechaInicio = $get('fecha_inicio');
@@ -72,6 +76,7 @@ class MembresiaResource extends Resource
                     ->required()
                     ->live()
                     ->label('Tipo de Membresía')
+                    // Al cambiar el plan, recalculamos automáticamente la fecha de fin.
                     ->afterStateUpdated(function ($get, $set, ?string $state) {
                         self::calcularFechaFin($get, $set, $state);
                     }),
@@ -79,7 +84,7 @@ class MembresiaResource extends Resource
                 Forms\Components\DatePicker::make('fecha_inicio')
                     ->required()
                     ->default(now())
-                    ->live()
+                    ->live() // También recalcula si el usuario cambia la fecha de inicio.
                     ->label('Fecha de Inicio')
                     ->afterStateUpdated(function ($get, $set) {
                         self::calcularFechaFin($get, $set, $get('id_tipo'));
@@ -87,7 +92,7 @@ class MembresiaResource extends Resource
 
                 Forms\Components\DatePicker::make('fecha_fin')
                     ->required()
-                    ->readonly()
+                    ->readonly() // El usuario no la puede editar manualmente, el sistema la calcula por seguridad.
                     ->label('Fecha de Vencimiento'),
 
                 // Valores exactamente iguales a los de la migración enum
@@ -110,6 +115,7 @@ class MembresiaResource extends Resource
             ]);
     }
 
+    // Toma la fecha de inicio y le suma los días de duración del tipo de membresía elegido.
     protected static function calcularFechaFin($get, $set, ?string $tipoMembresiaId): void
     {
         $fechaInicio = $get('fecha_inicio');
@@ -145,7 +151,7 @@ class MembresiaResource extends Resource
                     ->label('Vencimiento'),
                 Tables\Columns\TextColumn::make('estado')
                     ->badge()
-                    ->formatStateUsing(fn (string $state): string => ucfirst($state)) // Colocar la primera letra en mayúscula (aunque la BD solo acepte minúsculas).
+                    ->formatStateUsing(fn (string $state): string => ucfirst($state)) // Función especial para colocar la primera letra en mayúscula (aunque la BD solo acepte minúsculas).
                     ->color(fn (string $state): string => match ($state) {
                         'activa' => 'success',
                         'pendiente' => 'warning',

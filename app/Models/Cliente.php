@@ -9,11 +9,12 @@ class Cliente extends Model
 {
     use HasFactory;
 
-    // Apunta a la tabla correcta de la migración
+    // Apunta a la tabla de la migración
     protected $table = 'cliente'; 
 
-    protected $primaryKey = 'id_cliente'; // Clave primaria personalizada.
+    protected $primaryKey = 'id_cliente'; // Llave primaria personalizada.
 
+    // Campos que el usuario puede llenar desde la interfaz de registro.
     protected $fillable = [
         'nombre',
         'apellido_paterno',

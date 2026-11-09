@@ -11,7 +11,7 @@ use Carbon\Carbon;
 
 class GymStatsOverview extends BaseWidget
 {
-    // Widget aparece en la pantalla principal.
+    // Widget aparece en la pantalla principal (indica el orden de aparición).
     protected static ?int $sort = 1;
 
     protected function getStats(): array
@@ -27,7 +27,6 @@ class GymStatsOverview extends BaseWidget
         $totalPrestamos = Prestamo::count();
 
         // Card para asistencias (Accesos)
-        // Suponiendo que usaste el campo created_at para el acceso, o adáptalo a fecha_hora
         $asistenciasHoy = Asistencia::whereDate('created_at', Carbon::today())->count();
         $asistenciasAyer = Asistencia::whereDate('created_at', Carbon::yesterday())->count();
 
@@ -49,6 +48,7 @@ class GymStatsOverview extends BaseWidget
         ];
     }
 
+    // Se define que la vista del widget tendrá 3 columnas, para que se vean las 3 cards en una sola fila.
     protected function getColumns(): int
     {
         return 3; 

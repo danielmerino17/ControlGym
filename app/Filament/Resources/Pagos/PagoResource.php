@@ -16,6 +16,7 @@ class PagoResource extends Resource
 {
     protected static ?string $model = Pago::class;
 
+    // Configuración de la ruta base para acceder a este recurso en el panel de administración. 
     public static function getNavigationIcon(): ?string
     {
         return 'heroicon-o-currency-dollar';
@@ -73,7 +74,7 @@ class PagoResource extends Resource
 
                 Forms\Components\TextInput::make('monto')
                     ->numeric()
-                    ->prefix('$')
+                    ->prefix('$') // Se muestra el "$" antes del monto para indicar que es dinero.
                     ->required()
                     ->label('Monto Cobrado'),
 
@@ -109,7 +110,7 @@ class PagoResource extends Resource
                     ->label('Método'),
 
                 Tables\Columns\TextColumn::make('monto')
-                    ->money('MXN')
+                    ->money('MXN') // Formatea automáticamente el número como moneda (ej. $500.00)
                     ->sortable()
                     ->label('Monto'),
 

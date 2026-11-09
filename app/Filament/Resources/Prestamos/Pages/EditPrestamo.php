@@ -26,6 +26,6 @@ class EditPrestamo extends EditRecord
     // Mensaje de aviso al registrar.
     protected function getSavedNotificationMessage(): ?string
     {
-        return 'Préstamo actualizado correctamente  ';
+        return '¡Préstamo actualizado correctamente';
     }
 }

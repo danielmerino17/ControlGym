@@ -46,7 +46,25 @@ class AsistenciaResource extends Resource
                     ->searchable()
                     ->preload()
                     ->required()
-                    ->label('Cliente / Recepción'),
+                    ->live() // Monitorea los cambios en tiempo real para actualizar la visibilidad del campo de motivo de denegación.
+                    ->label('Cliente / Recepción')
+                    ->afterStateUpdated(function ($state, callable $set) {
+                        if (!$state) return;
+
+                        // Se busca si el cliente tiene una membresía activa y vigente.
+                        $tieneMembresiaActiva = Membresia::where('id_cliente', $state)
+                            ->where('estado', 'activa')
+                            ->where('fecha_fin', '>=', now())
+                            ->exists();
+
+                        if($tieneMembresiaActiva) {
+                            $set('resultado', 'permitido');
+                            $set('motivo_denegacion', null);
+                        } else {
+                            $set('resultado', 'denegado');
+                            $set('motivo_denegacion', 'El cliente no tiene una membresía activa o vigente.');
+                        }
+                    }),
 
                 Forms\Components\Select::make('resultado')
                     ->options([

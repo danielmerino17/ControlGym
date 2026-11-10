@@ -10,7 +10,7 @@ class ClienteSeeder extends Seeder
 {
     public function run(): void
     {
-        Cliente::create([
+        Cliente::firstOrCreate([
             'nombre' => 'Carlos',
             'apellido_paterno' => 'Pérez',
             'apellido_materno' => 'Gómez',
@@ -20,7 +20,7 @@ class ClienteSeeder extends Seeder
             'activo' => true,
         ]);
 
-        Cliente::create([
+        Cliente::creafirstOrCreatete([
             'nombre' => 'María',
             'apellido_paterno' => 'López',
             'apellido_materno' => 'Martínez',

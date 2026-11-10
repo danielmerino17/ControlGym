@@ -100,6 +100,9 @@ class ClienteResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('id_cliente')
+                    ->sortable()
+                    ->label('ID'),
                 TextColumn::make('nombre')
                     ->searchable()
                     ->sortable()

@@ -100,6 +100,9 @@ class ClienteResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('id_cliente')
+                    ->sortable()
+                    ->label('ID'),
                 TextColumn::make('nombre')
                     ->searchable()
                     ->sortable()
@@ -139,7 +142,6 @@ class ClienteResource extends Resource
             ])
             ->actions([
                 \Filament\Actions\EditAction::make(),
-                \Filament\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 //

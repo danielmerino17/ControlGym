@@ -67,10 +67,12 @@ class PagoResource extends Resource
                     ->label('Método de Pago'),
 
                 Forms\Components\TextInput::make('folio_comprobante')
-                    ->required()
-                    ->maxLength(50)
-                    ->unique(ignoreRecord: true) // Evita folios duplicados
-                    ->label('Folio / Comprobante'),
+                    ->label('Folio de Comprobante')
+                    ->hiddenOn('create') // Desaparce la caja de text al ingresar un pago nuevo.
+                    ->disabled() // Lo muestra bloqueado si después entras a "Editar" o "Ver" el registro
+                    ->dehydrated() // Evita errores al actualizar el registro.
+                    ->maxLength(255),
+                       
 
                 Forms\Components\TextInput::make('monto')
                     ->numeric()
@@ -79,11 +81,12 @@ class PagoResource extends Resource
                     ->label('Monto Cobrado'),
 
                 Forms\Components\TextInput::make('descuento')
+                    ->label('Descuento Aplicado')
                     ->numeric()
                     ->prefix('$')
-                    ->default(0.00)
-                    ->label('Descuento Aplicado'),
-
+                    ->default(0)
+                    ->required(),
+                    
                 Forms\Components\DateTimePicker::make('fecha_hora')
                     ->required()
                     ->default(now())

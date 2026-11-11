@@ -12,7 +12,7 @@ class Pago extends Model
     protected $table = 'pago';
     protected $primaryKey = 'id_pago';
 
-    // Se especifica qué controlamos respecto a los datos financieros se pueden guardar desde el sistema.
+    // Se especifica qué se controla respecto a los datos se pueden guardar desde el sistema.
     protected $fillable = [
         'id_membresia',
         'id_metodo_pago',
@@ -31,7 +31,22 @@ class Pago extends Model
         'descuento' => 'decimal:2',
     ];
 
-    // Relación: cada pago está amarrado a una única membresía.
+    // Se genera automáticamente el folio_comprobante al crear un nuevo registro de pago.
+    protected static function booted()
+    {
+        static::creating(function ($pago) {
+            // Se busca el último registro usando tu llave primaria personalizada:
+            $ultimoPago = self::latest('id_pago')->first();
+            
+            // Se calcula el siguiente número secuencial:
+            $siguienteNumero = $ultimoPago ? $ultimoPago->id_pago + 1 : 1;
+            
+            // Asignamos el formato al campo folio_comprobante (ej. CG-00001):
+            $pago->folio_comprobante = 'CG-' . str_pad($siguienteNumero, 5, '0', STR_PAD_LEFT);
+        });
+    }
+
+    // Relación: cada pago le pertenece a una única membresía.
     public function membresia()
     {
         return $this->belongsTo(Membresia::class, 'id_membresia', 'id_membresia');

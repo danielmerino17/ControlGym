@@ -26,6 +26,6 @@ class EditPago extends EditRecord
     // Personalizar el mensaje de notificación después de guardar los cambios
     protected function getSavedNotificationMessage(): ?string
     {
-        return 'Pago actualizado correctamente!';
+        return '!Pago actualizado correctamente!';
     }
 }

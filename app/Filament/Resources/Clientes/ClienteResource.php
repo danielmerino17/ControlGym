@@ -142,7 +142,6 @@ class ClienteResource extends Resource
             ])
             ->actions([
                 \Filament\Actions\EditAction::make(),
-                \Filament\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 //

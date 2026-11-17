@@ -45,8 +45,8 @@ class MembresiaResource extends Resource
             ->components([
                 Forms\Components\Select::make('id_cliente')
                     ->relationship('cliente', 'nombre')
-                    ->getOptionLabelFromRecordUsing(fn ($record) => $record->nombre . ' ' . $record->primer_apellido)
-                    ->searchable()
+                    ->getOptionLabelFromRecordUsing(fn ($record) => $record->nombre_corto)
+                    ->searchable(['nombre', 'apellido_paterno', 'apellido_materno'])
                     ->preload()
                     ->required()
                     ->label('Cliente')
@@ -134,7 +134,7 @@ class MembresiaResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('cliente.nombre')
-                    ->formatStateUsing(fn ($record) => "{$record->cliente?->nombre} {$record->cliente?->primer_apellido}")
+                    ->formatStateUsing(fn ($record) => $record->cliente?->nombre_corto)
                     ->searchable()
                     ->sortable()
                     ->label('Cliente'),

@@ -43,16 +43,36 @@ class PrestamoResource extends Resource
             ->components([
                 Forms\Components\Select::make('id_cliente')
                     ->relationship('cliente', 'nombre')
-                    ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->nombre} {$record->primer_apellido}")
+                    ->getOptionLabelFromRecordUsing(fn ($record) => $record->nombre_corto)
                     ->searchable()
                     ->preload()
                     ->required()
                     ->label('Cliente'),
 
-                Forms\Components\TextInput::make('articulo')
+                Forms\Components\Select::make('articulo')
+                    ->options([
+                        'Levantamiento de Pesas' => [
+                            'Cinturón de halterofilia' => 'Cinturón de halterofilia',
+                            'Almohadilla para barra (Squat pad)' => 'Almohadilla para barra (Squat pad)',
+                            'Straps / Agarraderas' => 'Straps / Agarraderas',
+                            'Cinturón para lastre (Dip belt)' => 'Cinturón para lastre (Dip belt)',
+                            'Muñequeras' => 'Muñequeras',
+                        ],
+                        'Funcional y Movilidad' => [
+                            'Bandas de resistencia' => 'Bandas de resistencia',
+                            'Tapete / Mat de Yoga' => 'Tapete / Mat de Yoga',
+                            'Cuerdas para saltar' => 'Cuerdas para saltar',
+                            'Rodillo de espuma (Foam roller)' => 'Rodillo de espuma (Foam roller)',
+                            'Pelota de pilates' => 'Pelota de pilates',
+                        ],
+                        'Amenidades' => [
+                            'Candado para casillero' => 'Candado para casillero',
+                            'Toalla' => 'Toalla',
+                            'Cronómetro' => 'Cronómetro',
+                        ],
+                    ])
+                    ->searchable()
                     ->required()
-                    ->maxLength(255)
-                    ->placeholder('Ej. Toalla, Candado, Cinturón')
                     ->label('Artículo Prestado'),
 
                 Forms\Components\Select::make('estado')
@@ -64,12 +84,14 @@ class PrestamoResource extends Resource
                     ->default('prestado')
                     ->label('Estado del Préstamo'),
 
-                Forms\Components\DateTimePicker::make('fecha_prestamo')
+                Forms\Components\DatePicker::make('fecha_prestamo')
                     ->required()
                     ->default(now())
+                    ->displayFormat('d/m/Y')
                     ->label('Fecha de Préstamo'),
 
-                Forms\Components\DateTimePicker::make('fecha_devolucion')
+                Forms\Components\DatePicker::make('fecha_devolucion')
+                    ->displayFormat('d/m/Y')
                     ->label('Fecha de Devolución')
                     ->helperText('Llenar cuando el cliente devuelva el artículo.'),
 
@@ -85,7 +107,7 @@ class PrestamoResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('cliente.nombre')
-                    ->formatStateUsing(fn ($record) => "{$record->cliente?->nombre} {$record->cliente?->primer_apellido}")
+                    ->formatStateUsing(fn ($record) => $record->cliente?->nombre_corto)
                     ->searchable()
                     ->sortable()
                     ->label('Cliente'),
@@ -104,12 +126,12 @@ class PrestamoResource extends Resource
                     ->label('Estado'),
 
                 Tables\Columns\TextColumn::make('fecha_prestamo')
-                    ->dateTime('d/M/Y h:i A')
+                    ->date('d/m/Y')
                     ->sortable()
                     ->label('Préstamo'),
 
                 Tables\Columns\TextColumn::make('fecha_devolucion')
-                    ->dateTime('d/M/Y h:i A')
+                    ->date('d/m/Y')
                     ->sortable()
                     ->label('Devolución'),
             ])

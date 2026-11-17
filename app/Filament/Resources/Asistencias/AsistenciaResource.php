@@ -42,7 +42,7 @@ class AsistenciaResource extends Resource
             ->components([
                 Forms\Components\Select::make('id_cliente')
                     ->relationship('cliente', 'nombre')
-                    ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->nombre} {$record->primer_apellido}")
+                    ->getOptionLabelFromRecordUsing(fn ($record) => $record->nombre_corto)
                     ->searchable()
                     ->preload()
                     ->required()
@@ -93,7 +93,7 @@ class AsistenciaResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('cliente.nombre')
-                    ->formatStateUsing(fn ($record) => "{$record->cliente?->nombre} {$record->cliente?->primer_apellido}")
+                    ->formatStateUsing(fn ($record) => $record->cliente?->nombre_corto)
                     ->searchable()
                     ->sortable()
                     ->label('Cliente'),

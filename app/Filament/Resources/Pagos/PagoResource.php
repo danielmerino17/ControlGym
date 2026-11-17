@@ -43,11 +43,11 @@ class PagoResource extends Resource
             ->components([
                 Forms\Components\Select::make('id_membresia')
                     ->relationship('membresia', 'id_membresia')
-                    ->getOptionLabelFromRecordUsing(fn (Membresia $record) => "Membresía #{$record->id_membresia} - {$record->cliente->nombre} {$record->cliente->primer_apellido} ({$record->estado})")
+                    ->getOptionLabelFromRecordUsing(fn (Membresia $record) => "Membresía #{$record->id_membresia} - {$record->cliente->nombre_completo} ({$record->estado})")
                     ->searchable()
                     ->preload()
                     ->required()
-                    ->unique(ignoreRecord: true) // Evita pagar la misma membresía dos veces (restricción unique de la BD)
+                    ->unique(ignoreRecord: true) 
                     ->live()
                     ->label('Membresía a Pagar')
                     ->afterStateUpdated(function ($set, $state) {
@@ -87,10 +87,11 @@ class PagoResource extends Resource
                     ->default(0)
                     ->required(),
                     
-                Forms\Components\DateTimePicker::make('fecha_hora')
+                Forms\Components\DatePicker::make('fecha_hora')
                     ->required()
                     ->default(now())
-                    ->label('Fecha y Hora del Pago'),
+                    ->displayFormat('d/m/Y')
+                    ->label('Fecha del Pago'),
             ]);
     }
 
@@ -104,7 +105,7 @@ class PagoResource extends Resource
                     ->label('Folio'),
 
                 Tables\Columns\TextColumn::make('membresia.cliente.nombre')
-                    ->formatStateUsing(fn ($record) => "{$record->membresia?->cliente?->nombre} {$record->membresia?->cliente?->primer_apellido}")
+                    ->formatStateUsing(fn ($record) => $record->membresia?->cliente?->nombre_completo)
                     ->searchable()
                     ->label('Cliente'),
 
@@ -118,7 +119,7 @@ class PagoResource extends Resource
                     ->label('Monto'),
 
                 Tables\Columns\TextColumn::make('fecha_hora')
-                    ->dateTime('d/M/Y h:i A')
+                    ->date('d/m/Y')
                     ->sortable()
                     ->label('Fecha'),
             ])

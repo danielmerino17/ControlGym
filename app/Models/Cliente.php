@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
+
 
 class Cliente extends Model
 {
@@ -28,11 +30,20 @@ class Cliente extends Model
         'activo', // Campo importante para la baja lógica
     ];
 
+    // Primer nombre + primer apellido.
+    public function getNombreCortoAttribute(): string
+    {
+        $primerNombre = Str::of($this->nombre)->trim()->before(' ');
+
+        return trim("{$primerNombre} {$this->apellido_paterno}");
+    }
+
     // Atributo para mostrar el nombre completo en selects y tablas
     public function getNombreCompletoAttribute(): string
     {
         return trim("{$this->nombre} {$this->apellido_paterno} {$this->apellido_materno}");
     }
+
 
     // Relación: un cliente tiene muchas membresías.
     public function membresias()

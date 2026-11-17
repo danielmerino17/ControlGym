@@ -169,8 +169,13 @@ class MembresiaResource extends Resource
                     ])
                     ->label('Filtrar Estado'),
             ])
+            // Confirmación de borrado para evitar errores. BORRAR MEMBRESÍAS PUEDE AFECTAR EL HISTORIAL DE PAGOS DEL CLIENTE.  
             ->actions([
                 Actions\EditAction::make(),
+                Actions\DeleteAction::make()
+                    ->modalHeading('Borrar Membresía')
+                    ->modalDescription('¿Estás seguro de que deseas borrar esta membresía? Esta acción es irreversible y podría afectar el historial de pagos del cliente.')
+                    ->modalSubmitActionLabel('Sí, borrar membresía'),
             ]);
     }
 

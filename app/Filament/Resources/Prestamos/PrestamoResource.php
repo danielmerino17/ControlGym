@@ -50,29 +50,13 @@ class PrestamoResource extends Resource
                     ->label('Cliente'),
 
                 Forms\Components\Select::make('articulo')
-                    ->options([
-                        'Levantamiento de Pesas' => [
-                            'Cinturón de halterofilia' => 'Cinturón de halterofilia',
-                            'Almohadilla para barra (Squat pad)' => 'Almohadilla para barra (Squat pad)',
-                            'Straps / Agarraderas' => 'Straps / Agarraderas',
-                            'Cinturón para lastre (Dip belt)' => 'Cinturón para lastre (Dip belt)',
-                            'Muñequeras' => 'Muñequeras',
-                        ],
-                        'Funcional y Movilidad' => [
-                            'Bandas de resistencia' => 'Bandas de resistencia',
-                            'Tapete / Mat de Yoga' => 'Tapete / Mat de Yoga',
-                            'Cuerdas para saltar' => 'Cuerdas para saltar',
-                            'Rodillo de espuma (Foam roller)' => 'Rodillo de espuma (Foam roller)',
-                            'Pelota de pilates' => 'Pelota de pilates',
-                        ],
-                        'Amenidades' => [
-                            'Candado para casillero' => 'Candado para casillero',
-                            'Toalla' => 'Toalla',
-                            'Cronómetro' => 'Cronómetro',
-                        ],
-                    ])
-                    ->searchable()
+                    ->options(function () {
+                        return \Illuminate\Support\Facades\DB::table('material')
+                            ->where('activo', true)
+                            ->pluck('nombre', 'nombre');
+                    })
                     ->required()
+                    ->searchable()
                     ->label('Artículo Prestado'),
 
                 Forms\Components\Select::make('estado')
@@ -114,7 +98,7 @@ class PrestamoResource extends Resource
 
                 Tables\Columns\TextColumn::make('articulo')
                     ->searchable()
-                    ->label('Artículo'),
+                    ->label('Artículo Prestado'),
 
                 Tables\Columns\TextColumn::make('estado')
                     ->badge()

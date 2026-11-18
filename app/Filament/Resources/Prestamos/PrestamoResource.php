@@ -51,9 +51,17 @@ class PrestamoResource extends Resource
 
                 Forms\Components\Select::make('articulo')
                     ->options(function () {
-                        return \Illuminate\Support\Facades\DB::table('material')
-                            ->where('activo', true)
-                            ->pluck('nombre', 'nombre');
+                        $materiales = \Illuminate\Support\Facades\DB::table('material')
+                            ->where('activo', 1)
+                            ->where('cantidad_total', '>', 0)
+                            ->get();
+                            
+                        $opciones = [];
+                        foreach ($materiales as $item) {
+                            $opciones[$item->nombre] = "{$item->nombre} (Disponibles: {$item->cantidad_total})";
+                        }
+                        
+                        return $opciones;
                     })
                     ->required()
                     ->searchable()

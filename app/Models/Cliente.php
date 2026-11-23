@@ -62,4 +62,13 @@ class Cliente extends Model
     {
         return $this->hasMany(Prestamo::class);
     }
+
+    protected static function booted(): void
+    {
+        static::deleting(function (Membresia $membresia) {
+            if ($membresia->estado === 'activa') {
+                return false; // Cancela la eliminación en BD
+            }
+        });
+    }
 }

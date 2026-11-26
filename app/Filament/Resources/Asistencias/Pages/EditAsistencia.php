@@ -13,9 +13,14 @@ class EditAsistencia extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            DeleteAction::make(),
+            DeleteAction::make()
+                ->modalHeading('Eliminar Asistencia')
+                ->modalDescription('¿Estás seguro de que deseas eliminar este registro de acceso?')
+                ->modalSubmitActionLabel('Sí, eliminar')
+                ->successNotificationTitle('¡Asistencia eliminada correctamente!'),
         ];
     }
+    
     // Redireccionar a la página de índice después de guardar los cambios
     protected function getRedirectUrl(): string
     {

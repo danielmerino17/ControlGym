@@ -48,4 +48,13 @@ class Membresia extends Model
     {
         return $this->hasMany(Pago::class, 'id_membresia', 'id_membresia');
     }
+
+    protected static function booted(): void
+    {
+        static::deleting(function (Membresia $membresia) {
+            if ($membresia->estado === 'activa') {
+                return false; // Cancela la eliminación en BD
+            }
+        });
+    }
 }

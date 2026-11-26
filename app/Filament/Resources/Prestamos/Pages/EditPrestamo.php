@@ -13,19 +13,21 @@ class EditPrestamo extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            DeleteAction::make(),
+            DeleteAction::make()
+                ->modalHeading('Eliminar Préstamo')
+                ->modalDescription('¿Estás seguro de que deseas eliminar este préstamo? Si aún no se devuelve, el artículo regresará al inventario.')
+                ->modalSubmitActionLabel('Sí, eliminar')
+                ->successNotificationTitle('¡Préstamo eliminado correctamente!'),
         ];
     }
 
-    // Redirigir al menú principal una vez editado el registro.
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');
     }
 
-    // Mensaje de aviso al registrar.
     protected function getSavedNotificationMessage(): ?string
     {
-        return '¡Préstamo actualizado correctamente';
+        return '¡Préstamo actualizado correctamente!';
     }
 }

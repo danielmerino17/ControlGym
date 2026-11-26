@@ -8,6 +8,7 @@ use App\Models\TipoMembresia;
 use Carbon\Carbon;
 use Filament\Actions;
 use Filament\Forms;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables;
@@ -38,7 +39,7 @@ class MembresiaResource extends Resource
         return 2;
     }
 
-    // Construcción del formulario. 
+    // Construcción del formulario.
     public static function form(Schema $schema): Schema
     {
         return $schema
@@ -169,13 +170,25 @@ class MembresiaResource extends Resource
                     ])
                     ->label('Filtrar Estado'),
             ])
-            // Confirmación de borrado para evitar errores. BORRAR MEMBRESÍAS PUEDE AFECTAR EL HISTORIAL DE PAGOS DEL CLIENTE.  
+            // Confirmación y bloqueo de borrado para membresías activas.
             ->actions([
                 Actions\EditAction::make(),
                 Actions\DeleteAction::make()
                     ->modalHeading('Borrar Membresía')
+                    ->successNotificationTitle('¡Membresía eliminada correctamente!')
                     ->modalDescription('¿Estás seguro de que deseas borrar esta membresía? Esta acción es irreversible y podría afectar el historial de pagos del cliente.')
-                    ->modalSubmitActionLabel('Sí, borrar membresía'),
+                    ->modalSubmitActionLabel('Sí, borrar membresía')
+                    ->before(function ($record, Actions\DeleteAction $action) {
+                        if ($record->estado === 'activa') {
+                            Notification::make()
+                                ->danger()
+                                ->title('No se puede eliminar')
+                                ->body('No puedes borrar una membresía que se encuentra activa. Cancélala primero.')
+                                ->send();
+
+                            $action->halt(); // Detiene el borrado
+                        }
+                    }),
             ]);
     }
 

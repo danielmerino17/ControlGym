@@ -9,16 +9,15 @@ class CreateTipoMembresia extends CreateRecord
 {
     protected static string $resource = TipoMembresiaResource::class;
 
-     // Método para redirigir a la tabla principal
+    protected static bool $canCreateAnother = false;
+
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');
     }
 
-    // Notificación de tipo de membresía registrado.
     protected function getCreatedNotificationMessage(): ?string
     {
         return '¡Tipo de membresía registrado correctamente!';
     }
 }
-

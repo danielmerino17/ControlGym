@@ -13,7 +13,21 @@ class EditMetodoPago extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            DeleteAction::make(),
+            DeleteAction::make()
+                ->modalHeading('Eliminar Método de Pago')
+                ->modalDescription('¿Estás seguro de que deseas eliminar este método de pago?')
+                ->modalSubmitActionLabel('Sí, eliminar')
+                ->successNotificationTitle('¡Método de pago eliminado correctamente!'),
         ];
+    }
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
+
+    protected function getSavedNotificationMessage(): ?string
+    {
+        return '¡Método de pago actualizado correctamente!';
     }
 }

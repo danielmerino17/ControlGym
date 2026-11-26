@@ -13,7 +13,11 @@ class EditTipoMembresia extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            DeleteAction::make(),
+            DeleteAction::make()
+                ->modalHeading('Eliminar Tipo de Membresía')
+                ->modalDescription('¿Estás seguro de que deseas eliminar este plan?')
+                ->modalSubmitActionLabel('Sí, eliminar')
+                ->successNotificationTitle('¡Tipo de membresía eliminado correctamente!'),
         ];
     }
 

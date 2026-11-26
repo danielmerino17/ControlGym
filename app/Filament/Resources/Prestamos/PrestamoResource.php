@@ -137,7 +137,11 @@ class PrestamoResource extends Resource
             ])
             ->actions([
                 Actions\EditAction::make(),
-                Actions\DeleteAction::make(),
+                Actions\DeleteAction::make()
+                    ->modalHeading('Eliminar Préstamo')
+                    ->modalDescription('¿Estás seguro de que deseas eliminar este préstamo?')
+                    ->modalSubmitActionLabel('Sí, eliminar')
+                    ->successNotificationTitle('¡Préstamo eliminado correctamente!'),
             ]);
     }
 

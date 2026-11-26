@@ -13,19 +13,21 @@ class EditPago extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            DeleteAction::make(),
+            DeleteAction::make()
+                ->modalHeading('Eliminar Pago')
+                ->modalDescription('¿Estás seguro de que deseas eliminar este registro de pago?')
+                ->modalSubmitActionLabel('Sí, eliminar')
+                ->successNotificationTitle('¡Pago eliminado correctamente!'),
         ];
     }
 
-    // Redireccionar a la página de índice después de guardar los cambios
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');
     }
 
-    // Personalizar el mensaje de notificación después de guardar los cambios
     protected function getSavedNotificationMessage(): ?string
     {
-        return '!Pago actualizado correctamente!';
+        return '¡Pago actualizado correctamente!';
     }
 }
